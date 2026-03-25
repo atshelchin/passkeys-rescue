@@ -1,0 +1,29 @@
+{
+  "name": "passkeys-rescue",
+  "version": "1.0.0",
+  "description": "Rescue passkeys when your domain is lost — local domain mirror for WebAuthn recovery",
+  "module": "src/index.ts",
+  "type": "module",
+  "bin": {
+    "passkeys-rescue": "./src/index.ts"
+  },
+  "scripts": {
+    "start": "bun run src/index.ts",
+    "dev": "bun --watch src/index.ts",
+    "build": "bun build --compile src/index.ts --outfile passkeys-rescue",
+    "build:darwin-arm64": "bun build --compile --target=bun-darwin-arm64 src/index.ts --outfile passkeys-rescue-darwin-arm64",
+    "build:darwin-x64": "bun build --compile --target=bun-darwin-x64 src/index.ts --outfile passkeys-rescue-darwin-x64",
+    "build:linux-x64": "bun build --compile --target=bun-linux-x64 src/index.ts --outfile passkeys-rescue-linux-x64",
+    "build:linux-arm64": "bun build --compile --target=bun-linux-arm64 src/index.ts --outfile passkeys-rescue-linux-arm64",
+    "build:windows": "bun build --compile --target=bun-windows-x64 src/index.ts --outfile passkeys-rescue-windows-x64.exe",
+    "build:all": "bun run build:darwin-arm64 && bun run build:darwin-x64 && bun run build:linux-x64 && bun run build:linux-arm64 && bun run build:windows"
+  },
+  "private": false,
+  "keywords": ["passkey", "webauthn", "recovery", "domain-mirror", "mkcert"],
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  }
+}
