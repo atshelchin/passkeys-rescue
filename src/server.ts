@@ -69,6 +69,10 @@ export async function startServer(opts: ServerOptions): Promise<void> {
           headers.set("X-Forwarded-Host", domain);
           headers.set("X-Forwarded-Proto", "https");
           headers.set("X-Forwarded-For", "127.0.0.1");
+          // Request uncompressed response from upstream, because Bun's fetch
+          // auto-decompresses but keeps the content-encoding header, causing
+          // ERR_CONTENT_DECODING_FAILED in the browser.
+          headers.set("Accept-Encoding", "identity");
           // Remove headers that might cause issues with upstream
           headers.delete("sec-fetch-dest");
           headers.delete("sec-fetch-mode");
@@ -83,8 +87,15 @@ export async function startServer(opts: ServerOptions): Promise<void> {
 
           const resp = await fetch(proxyReq);
 
-          // Copy response headers, rewrite Location header for redirects
+          // Copy response headers, fix encoding mismatch
           const respHeaders = new Headers(resp.headers);
+          // Remove encoding headers — Bun's fetch may have already decoded the body,
+          // so these would be stale and cause browser decode errors
+          respHeaders.delete("content-encoding");
+          respHeaders.delete("content-length");
+          respHeaders.delete("transfer-encoding");
+
+          // Rewrite Location header for redirects
           const location = respHeaders.get("location");
           if (location) {
             try {

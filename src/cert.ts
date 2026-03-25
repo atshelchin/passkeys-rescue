@@ -5,7 +5,7 @@ import * as path from "node:path";
 import * as fs from "node:fs";
 
 const MKCERT_VERSION = "v1.4.4";
-const MKCERT_BASE_URL = `https://github.com/nicholasgasior/mkcert/releases/download/${MKCERT_VERSION}`;
+const MKCERT_BASE_URL = `https://github.com/FiloSottile/mkcert/releases/download/${MKCERT_VERSION}`;
 
 // mkcert binary path managed by passkeys-rescue
 function getMkcertDir(): string {
